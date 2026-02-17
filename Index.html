@@ -1,0 +1,2753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <title>Hoops of Grace Basketball Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Mono:ital@0;1&family=Barlow+Condensed:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C87A;
+      --gold-dark: #9A7B35;
+      --black: #0A0A0A;
+      --charcoal: #141414;
+      --dark: #1C1C1C;
+      --mid: #2A2A2A;
+      --text: #E8E8E8;
+      --muted: #888;
+      --white: #F5F3EE;
+      --red: #C0392B;
+    }
+
+    html { 
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Barlow Condensed', sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.35;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.98), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.97);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .nav-logo img {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(201,168,76,0.3));
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 1000;
+    }
+    .mobile-menu-toggle span {
+      width: 25px;
+      height: 2px;
+      background: var(--gold);
+      transition: all 0.3s;
+    }
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+    }
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--black) !important;
+      padding: 0.55rem 1.4rem !important;
+      font-weight: 700 !important;
+      transition: background 0.3s !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--black) !important; }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    /* Hero Slideshow */
+    /* Hero Video Background */
+    .hero-video-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+    /* Dark overlay on video for text readability */
+    .hero-video-container::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(10,10,10,0.85) 0%,
+        rgba(20,20,20,0.80) 30%,
+        rgba(10,10,10,0.70) 60%,
+        rgba(10,10,10,0.85) 100%
+      );
+      z-index: 1;
+    }
+    /* Gold accent overlay */
+    .hero-video-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 60%);
+      z-index: 1;
+    }
+    .hero-court {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-image:
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(201,168,76,0.04) 79px, rgba(201,168,76,0.04) 80px),
+        repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(201,168,76,0.04) 79px, rgba(201,168,76,0.04) 80px);
+    }
+    /* Court arc */
+    .hero-arc {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      border: 1.5px solid rgba(201,168,76,0.08);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      border-bottom: none;
+    }
+    .hero-arc-2 {
+      width: 1100px;
+      height: 600px;
+      border-color: rgba(201,168,76,0.04);
+    }
+    .hero-arc-3 {
+      width: 400px;
+      height: 220px;
+      border-color: rgba(201,168,76,0.12);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 6rem 7rem;
+      max-width: 1100px;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(4.5rem, 10vw, 9rem);
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    .hero-title .accent { color: var(--gold); display: block; }
+    .hero-title .stroke {
+      -webkit-text-stroke: 1.5px rgba(245,243,238,0.3);
+      color: transparent;
+      display: block;
+    }
+    .hero-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.5;
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 1s forwards;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1.1rem 2.8rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-light);
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+    }
+    .btn-primary:hover::after { transform: translateX(0); }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(245,243,238,0.2);
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { color: var(--gold); border-color: var(--gold); }
+    .hero-stats {
+      position: absolute;
+      right: 6rem;
+      bottom: 7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      opacity: 0;
+      animation: fadeLeft 0.9s 1.2s forwards;
+      z-index: 2;
+    }
+    .stat-item { text-align: right; }
+    .stat-num {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 2.8rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      z-index: 2;
+      animation: pulse 2s infinite;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { position: relative; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+
+    /* ─── MARQUEE BAND ─── */
+    .marquee-band {
+      background: var(--gold);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-flex;
+      animation: marquee 18s linear infinite;
+    }
+    .marquee-inner span {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding: 0 2rem;
+    }
+    .marquee-dot { opacity: 0.4; }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── MISSION ─── */
+    #mission {
+      padding: 8rem 0;
+      background: var(--charcoal);
+    }
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .section-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+    .section-title .gold { color: var(--gold); }
+    .mission-text {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 2rem;
+    }
+    .mission-text strong { color: var(--white); font-weight: 600; }
+    .mission-right {
+      position: relative;
+    }
+    .vision-card {
+      background: var(--dark);
+      background-image: url('vision-background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .vision-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(28,28,28,0.75) 50%, rgba(10,10,10,0.9) 100%);
+      z-index: 0;
+    }
+    .vision-card::before {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      line-height: 0.7;
+      color: var(--gold);
+      opacity: 0.2;
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      z-index: 1;
+    }
+    .vision-card p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--white);
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .vision-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .mission-visual {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(201,168,76,0.1);
+    }
+    .visual-cell {
+      background: var(--charcoal);
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+    }
+    .visual-cell-num {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: var(--gold);
+    }
+    .visual-cell-txt {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ─── IMPACT DIVIDER ─── */
+    .impact-divider {
+      background: linear-gradient(135deg, var(--dark) 0%, #111 100%);
+      padding: 5rem 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(201,168,76,0.08);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+    .impact-numbers {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+    }
+    .impact-item {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-right: 1px solid rgba(201,168,76,0.1);
+      position: relative;
+    }
+    .impact-item:last-child { border-right: none; }
+    .impact-num {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--white);
+    }
+    .impact-num .unit {
+      font-size: 2rem;
+      color: var(--gold);
+      vertical-align: top;
+      margin-top: 0.3rem;
+      display: inline-block;
+    }
+    .impact-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      line-height: 1.4;
+    }
+
+    /* ─── STRATEGIC PLAN ─── */
+    #plan {
+      padding: 8rem 0;
+      background: var(--black);
+    }
+    .plan-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+    .plan-header .section-tag { justify-content: center; }
+    .plan-header .section-tag::before { display: none; }
+    .years-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: rgba(201,168,76,0.08);
+    }
+    .year-card {
+      background: var(--charcoal);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+    }
+    .year-card:hover { background: var(--dark); }
+    .year-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .year-card:hover::before { transform: scaleX(1); }
+    .year-num {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 4.5rem;
+      line-height: 1;
+      color: rgba(201,168,76,0.08);
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+    .year-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .year-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .year-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .year-items li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+      padding-left: 1rem;
+      position: relative;
+      font-weight: 300;
+    }
+    .year-items li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 0.75rem;
+    }
+
+    /* ─── INSPIRATION / YOUTH SECTION ─── */
+    #inspiration {
+      padding: 8rem 0;
+      background: var(--charcoal);
+      overflow: hidden;
+    }
+    .inspiration-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .inspiration-text .section-title { font-size: clamp(2.5rem, 4vw, 3.8rem); }
+    .inspiration-body {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-top: 1.8rem;
+    }
+    .inspiration-body strong { color: var(--white); font-weight: 600; }
+    .player-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .player-card {
+      background: var(--dark);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 2rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .player-card:hover {
+      border-color: rgba(201,168,76,0.4);
+      transform: translateY(-4px);
+    }
+    .player-number {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 5rem;
+      line-height: 1;
+      color: rgba(201,168,76,0.06);
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+    }
+    .player-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .player-icon svg { width: 22px; height: 22px; fill: var(--black); }
+    .player-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .player-role {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* ─── SUCCESS METRICS ─── */
+    #metrics {
+      padding: 8rem 0;
+      background: var(--black);
+    }
+    .metrics-header { margin-bottom: 5rem; }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: rgba(201,168,76,0.06);
+      margin-top: 4rem;
+    }
+    .metric-card {
+      background: var(--charcoal);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .metric-card:hover { background: var(--dark); }
+    .metric-bg-num {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 7rem;
+      line-height: 1;
+      color: rgba(201,168,76,0.04);
+      position: absolute;
+      bottom: -1rem;
+      right: -1rem;
+    }
+    .metric-value {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 3rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .metric-value sup {
+      font-size: 1.5rem;
+      vertical-align: top;
+      margin-top: 0.3rem;
+      display: inline-block;
+    }
+    .metric-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+    .metric-bar {
+      height: 2px;
+      background: rgba(201,168,76,0.12);
+      margin-top: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-bar-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      background: var(--gold);
+      width: 0%;
+      transition: width 1.5s ease;
+    }
+    .metric-bar.animated .metric-bar-fill {
+      width: var(--pct);
+    }
+
+    /* ─── DONATE ─── */
+    #donate {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .donate-bg {
+      background: var(--gold);
+      position: relative;
+      overflow: hidden;
+    }
+    .donate-bg::before {
+      content: 'GIVE';
+      position: absolute;
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 22rem;
+      line-height: 1;
+      color: rgba(0,0,0,0.05);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .donate-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .donate-left {
+      padding: 7rem 5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .donate-left .section-tag { color: rgba(0,0,0,0.5); }
+    .donate-left .section-tag::before { background: rgba(0,0,0,0.5); }
+    .donate-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+    }
+    .donate-sub {
+      font-size: 1.1rem;
+      color: rgba(0,0,0,0.65);
+      line-height: 1.6;
+      font-weight: 300;
+      max-width: 420px;
+    }
+    .donate-amounts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 2.5rem;
+    }
+    .amount-btn {
+      background: rgba(0,0,0,0.12);
+      border: 1.5px solid rgba(0,0,0,0.2);
+      color: var(--black);
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.9rem 1.8rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.05em;
+    }
+    .amount-btn:hover, .amount-btn.active {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--gold);
+    }
+    .donate-btn-main {
+      display: inline-block;
+      background: var(--black);
+      color: var(--gold);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1.2rem 3rem;
+      margin-top: 2rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+    .donate-btn-main:hover {
+      background: var(--charcoal);
+      color: var(--gold-light);
+    }
+    .donate-right {
+      background: var(--black);
+      padding: 7rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .donate-right::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gold);
+    }
+    .tier-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .tier-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .tier-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+    .tier-item:last-child { border-bottom: none; }
+    .tier-amount {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--gold);
+      min-width: 100px;
+      line-height: 1;
+    }
+    .tier-info { flex: 1; }
+    .tier-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .tier-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.4;
+    }
+
+    /* ─── PROGRAMS ─── */
+    #programs {
+      padding: 8rem 0;
+      background: var(--charcoal);
+    }
+    .programs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(201,168,76,0.06);
+    }
+    .program-card {
+      background: var(--dark);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .program-card:hover { background: var(--mid); }
+    .program-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+    .program-icon-wrap svg { width: 24px; height: 24px; fill: var(--gold); }
+    .program-card-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .program-card-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .program-tag {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      border: 1px solid rgba(201,168,76,0.25);
+      padding: 0.3rem 0.7rem;
+    }
+
+    /* ─── PARTNERSHIP SECTION ─── */
+    #partnership {
+      position: relative;
+      padding: 6rem 4rem;
+      background: linear-gradient(180deg, var(--black) 0%, var(--charcoal) 100%);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      overflow: hidden;
+    }
+    #partnership::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .partnership-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .partnership-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+    }
+    .partnership-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+    .partner-logo {
+      position: relative;
+      transition: all 0.4s ease;
+    }
+    .partner-logo a {
+      display: inline-block;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      z-index: 10;
+    }
+    .partner-logo img {
+      height: 120px;
+      width: auto;
+      filter: brightness(0.9) contrast(1.1);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+    .partner-logo:hover img {
+      filter: brightness(1.1) contrast(1.2);
+      transform: scale(1.05);
+    }
+    .partner-logo::after {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .partner-logo:hover::after {
+      opacity: 1;
+    }
+    @media (max-width: 768px) {
+      #partnership {
+        padding: 4rem 2rem;
+      }
+      .partnership-logos {
+        gap: 2rem;
+      }
+      .partner-logo img {
+        height: 90px;
+      }
+    }
+
+    /* ─── FAQ SECTION ─── */
+    #faq {
+      padding: 8rem 4rem;
+      background: var(--black);
+    }
+    .faq-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 5rem;
+    }
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--dark);
+      border: 1px solid rgba(201,168,76,0.1);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .faq-item:hover {
+      border-color: rgba(201,168,76,0.3);
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.8rem 2rem;
+      cursor: pointer;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+    }
+    .faq-question:hover {
+      background: rgba(201,168,76,0.05);
+    }
+    .faq-icon {
+      width: 24px;
+      height: 24px;
+      fill: var(--gold);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0 2rem;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 0 2rem 2rem;
+    }
+    .faq-answer p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    @media (max-width: 768px) {
+      #faq { padding: 4rem 1.5rem; }
+      .faq-question { 
+        font-size: 0.95rem; 
+        padding: 1.5rem 1.5rem;
+      }
+      .faq-answer p { font-size: 0.95rem; }
+      .faq-item.active .faq-answer {
+        padding: 0 1.5rem 1.5rem;
+      }
+    }
+
+    /* ─── TESTIMONIALS SECTION ─── */
+    #testimonials {
+      position: relative;
+      padding: 8rem 4rem;
+      background: var(--charcoal);
+      overflow: hidden;
+    }
+    #testimonials::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .testimonials-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 5rem;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .testimonial-card {
+      background: var(--dark);
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 2.5rem;
+      position: relative;
+      transition: all 0.4s;
+    }
+    .testimonial-card:hover {
+      border-color: rgba(201,168,76,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .testimonial-card::before {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      line-height: 0.7;
+      color: var(--gold);
+      opacity: 0.15;
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+    }
+    .testimonial-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .testimonial-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--black);
+    }
+    .testimonial-info {
+      flex: 1;
+    }
+    .testimonial-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .testimonial-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      #testimonials { padding: 4rem 1.5rem; }
+      .testimonials-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .testimonial-card { padding: 2rem; }
+    }
+
+    /* ─── FLOATING DONATE BUTTON ─── */
+    .floating-donate {
+      position: fixed;
+      right: 2rem;
+      bottom: 2rem;
+      z-index: 900;
+      animation: floatPulse 3s ease-in-out infinite;
+    }
+    .floating-donate-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1.2rem 2rem;
+      border-radius: 50px;
+      box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .floating-donate-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(201,168,76,0.6);
+    }
+    .floating-donate-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    @keyframes floatPulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* WhatsApp Button */
+    .whatsapp-float {
+      position: fixed;
+      right: 2rem;
+      bottom: 7rem;
+      z-index: 900;
+    }
+    .whatsapp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background: #25D366;
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .whatsapp-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+    }
+    .whatsapp-btn svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+    
+    @media (max-width: 768px) {
+      .floating-donate {
+        right: 1rem;
+        bottom: 1rem;
+      }
+      .floating-donate-btn {
+        padding: 1rem 1.5rem;
+        font-size: 0.8rem;
+      }
+      .floating-donate-btn span { display: none; }
+      .floating-donate-btn::after {
+        content: 'DONATE';
+      }
+      .whatsapp-float {
+        right: 1rem;
+        bottom: 5.5rem;
+      }
+      .whatsapp-btn {
+        width: 50px;
+        height: 50px;
+      }
+      .whatsapp-btn svg {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 5rem 0 3rem;
+    }
+    .footer-newsletter {
+      max-width: 500px;
+    }
+    .newsletter-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+    .newsletter-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .newsletter-input {
+      flex: 1;
+      background: var(--dark);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--text);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.9rem 1.2rem;
+      transition: all 0.3s;
+    }
+    .newsletter-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: var(--charcoal);
+    }
+    .newsletter-input::placeholder {
+      color: var(--muted);
+    }
+    .newsletter-btn {
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .newsletter-btn:hover {
+      background: var(--gold-light);
+    }
+    @media (max-width: 768px) {
+      .newsletter-form {
+        flex-direction: column;
+      }
+      .newsletter-btn {
+        width: 100%;
+      }
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .footer-brand img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 10px rgba(201,168,76,0.25));
+    }
+    .footer-brand span { color: var(--white); }
+    .footer-tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 280px;
+      font-weight: 300;
+    }
+    .footer-col-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .footer-links a {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 300;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(201,168,76,0.08);
+      margin-top: 4rem;
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .footer-501 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+    .reveal-delay-4 { transition-delay: 0.6s; }
+
+    /* ─── QUOTE STRIP ─── */
+    .quote-strip {
+      padding: 6rem 0;
+      background: var(--dark);
+      text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.08);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-strip::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-style: italic;
+      color: var(--white);
+      max-width: 850px;
+      margin: 0 auto;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-text em { color: var(--gold); font-style: normal; }
+    .quote-source {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 2rem;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      .container { padding: 0 2rem; }
+      .hero-content { padding: 0 2rem 5rem; }
+      .hero-stats { right: 2rem; bottom: 5rem; }
+      .mission-grid, .inspiration-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .years-grid { grid-template-columns: 1fr 1fr; }
+      .impact-numbers { grid-template-columns: repeat(3,1fr); }
+      .metrics-grid { grid-template-columns: repeat(2,1fr); }
+      .donate-inner { grid-template-columns: 1fr; }
+      .donate-right::before { display: none; }
+      .programs-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+    }
+    
+    /* ─── MOBILE & TABLET OPTIMIZATIONS ─── */
+    @media (max-width: 768px) {
+      /* Navigation */
+      nav { padding: 1rem 1.5rem; }
+      .nav-logo { font-size: 0.9rem; letter-spacing: 0.2em; }
+      
+      /* Mobile Menu */
+      .mobile-menu-toggle { display: flex; }
+      .nav-links { 
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--charcoal);
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        gap: 0;
+        transition: right 0.3s ease;
+        border-left: 1px solid rgba(201,168,76,0.2);
+        box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+        z-index: 999;
+      }
+      .nav-links.active { right: 0; }
+      .nav-links li { width: 100%; margin-bottom: 0; }
+      .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(201,168,76,0.1);
+        font-size: 1rem;
+      }
+      .nav-cta {
+        margin-top: 1rem;
+        padding: 1rem !important;
+        text-align: center;
+      }
+      
+      /* Hero Section */
+      #hero { min-height: 85vh; }
+      .hero-content { padding: 0 2rem 4rem; }
+      .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+      .hero-eyebrow { font-size: 0.6rem; }
+      .hero-sub { font-size: 1rem; max-width: 100%; }
+      .hero-actions { flex-direction: column; gap: 1rem; width: 100%; }
+      .btn-primary, .btn-secondary { 
+        width: 100%; 
+        text-align: center; 
+        justify-content: center;
+        padding: 1rem 2rem;
+        font-size: 0.85rem;
+      }
+      .hero-stats { display: none; }
+      
+      /* Sections */
+      section { padding: 4rem 1.5rem !important; }
+      .container { padding: 0 1rem; }
+      .section-title { font-size: clamp(2rem, 8vw, 3rem); }
+      
+      /* Grids */
+      .years-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .impact-numbers { grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+      .programs-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .player-cards { grid-template-columns: 1fr; gap: 1.5rem; }
+      .metrics-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .media-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      
+      /* Mission Layout */
+      .mission-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .vision-card { padding: 2rem; }
+      .vision-card::before { font-size: 5rem; }
+      
+      /* Donate Section */
+      .donate-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .donate-amounts { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+      .amount-btn { font-size: 0.85rem; padding: 0.8rem 1rem; }
+      
+      /* Touch Optimizations */
+      a, button { 
+        min-height: 44px; 
+        min-width: 44px; 
+      }
+      
+      /* Text Sizes */
+      .stat-number { font-size: 2.5rem; }
+      .program-card-title { font-size: 1.3rem; }
+    }
+    
+    /* Small Phones (< 375px) */
+    @media (max-width: 374px) {
+      .hero-title { font-size: 2rem; }
+      .nav-logo { font-size: 0.75rem; }
+      section { padding: 3rem 1rem !important; }
+      .impact-numbers { grid-template-columns: 1fr; }
+    }
+    
+    /* Large Phones / Small Tablets (375px - 640px) */
+    @media (min-width: 375px) and (max-width: 640px) {
+      .hero-title { font-size: clamp(2.8rem, 10vw, 3.5rem); }
+      .programs-grid { grid-template-columns: 1fr; }
+    }
+    
+    /* Tablets (641px - 1024px) */
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .programs-grid { grid-template-columns: repeat(2, 1fr); }
+      .player-cards { grid-template-columns: repeat(2, 1fr); }
+      .media-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    /* iOS Safari Specific Fixes */
+    @supports (-webkit-touch-callout: none) {
+      body { min-height: -webkit-fill-available; }
+      #hero { min-height: -webkit-fill-available; }
+    }
+
+    /* ─── MEDIA GALLERY / INSTAGRAM ─── */
+    #media {
+      position: relative;
+      padding: 8rem 0 6rem;
+      background: linear-gradient(180deg, var(--black) 0%, var(--charcoal) 50%, var(--black) 100%);
+      overflow: hidden;
+    }
+    #media::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .media-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 5rem;
+    }
+    .media-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .media-title .gold { color: var(--gold); }
+    .media-subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.6;
+    }
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+    .media-item {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 4px;
+      background: var(--dark);
+      border: 1px solid rgba(201,168,76,0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .media-item:hover {
+      transform: translateY(-8px);
+      border-color: rgba(201,168,76,0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(201,168,76,0.15);
+    }
+    .media-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 2;
+    }
+    .media-item:hover::before { opacity: 1; }
+    .media-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--mid) 100%);
+      position: relative;
+    }
+    .media-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(201,168,76,0.03) 19px, rgba(201,168,76,0.03) 20px),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(201,168,76,0.03) 19px, rgba(201,168,76,0.03) 20px);
+    }
+    .media-icon {
+      width: 60px;
+      height: 60px;
+      fill: var(--gold);
+      opacity: 0.3;
+      z-index: 1;
+    }
+    .media-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 3;
+    }
+    .media-item:hover .media-overlay {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .media-caption {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+    .media-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .instagram-cta {
+      text-align: center;
+      margin-top: 4rem;
+    }
+    .instagram-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: transparent;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      transition: all 0.3s;
+    }
+    .instagram-btn:hover {
+      background: var(--gold);
+      color: var(--black);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201,168,76,0.3);
+    }
+    .instagram-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    .instagram-feed-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+      background: rgba(10, 10, 10, 0.5);
+      border-radius: 8px;
+      border: 1px solid rgba(201, 168, 76, 0.1);
+    }
+    .snapwidget-widget {
+      min-height: 400px;
+      max-width: 100%;
+      background: transparent !important;
+      border-radius: 4px;
+      display: block;
+      margin: 0 auto;
+      padding: 0;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    /* Optimize for 300px thumbnails with 16px padding */
+    .snapwidget-widget iframe {
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    /* Style for responsive 300px thumbnails */
+    .snapwidget-widget img {
+      border-radius: 2px;
+    }
+    @media (max-width: 1024px) {
+      .media-grid { grid-template-columns: repeat(2, 1fr); }
+      .instagram-feed-container { padding: 0 2rem 2rem; }
+      .snapwidget-widget { 
+        min-height: 400px;
+      }
+    }
+    @media (max-width: 768px) {
+      .instagram-feed-container { padding: 0 1rem 2rem; }
+      .snapwidget-widget {
+        min-height: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <div class="nav-logo">
+      <img src="logo.png" alt="Hoops of Grace Logo">
+      Hoops <span>of Grace</span>
+    </div>
+    
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#plan">5-Year Plan</a></li>
+      <li><a href="#metrics">Impact</a></li>
+      <li><a href="#media">Media</a></li>
+      <li><a href="#donate" class="nav-cta">Donate Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="hero-video-container">
+        <video class="hero-video" autoplay loop muted playsinline>
+          <source src="hero-video.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="hero-court"></div>
+    <div class="hero-arc"></div>
+    <div class="hero-arc hero-arc-2"></div>
+    <div class="hero-arc hero-arc-3"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Est. 2024 · Registered Nonprofit · Transforming Uganda</p>
+      <h1 class="hero-title">
+        <span class="stroke">Hoops</span>
+        <span class="accent">of Grace</span>
+      </h1>
+      <p class="hero-sub">We transform underprivileged youth into disciplined athletes and confident leaders — preparing them to excel on the court and in life.</p>
+      <div class="hero-actions">
+        <a href="#donate" class="btn-primary"><span>Become a Donor</span></a>
+        <a href="#mission" class="btn-secondary">Our Mission →</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">90<span style="font-size:1.5rem;color:var(--gold)">%</span></div>
+        <div class="stat-label">Graduation Rate Goal</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1,500<span style="font-size:1.2rem;color:var(--muted)">+</span></div>
+        <div class="stat-label">Youth by Year 5</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$10M<span style="font-size:1.2rem;color:var(--muted)">+</span></div>
+        <div class="stat-label">Community Investment</div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-band">
+    <div class="marquee-inner">
+      <span>Elite Training</span><span class="marquee-dot">✦</span>
+      <span>Character Development</span><span class="marquee-dot">✦</span>
+      <span>Academic Excellence</span><span class="marquee-dot">✦</span>
+      <span>Community Impact</span><span class="marquee-dot">✦</span>
+      <span>Leadership Formation</span><span class="marquee-dot">✦</span>
+      <span>University Pathway</span><span class="marquee-dot">✦</span>
+      <span>Regional Recognition</span><span class="marquee-dot">✦</span>
+      <span>Transforming Lives</span><span class="marquee-dot">✦</span>
+      <span>Elite Training</span><span class="marquee-dot">✦</span>
+      <span>Character Development</span><span class="marquee-dot">✦</span>
+      <span>Academic Excellence</span><span class="marquee-dot">✦</span>
+      <span>Community Impact</span><span class="marquee-dot">✦</span>
+      <span>Leadership Formation</span><span class="marquee-dot">✦</span>
+      <span>University Pathway</span><span class="marquee-dot">✦</span>
+      <span>Regional Recognition</span><span class="marquee-dot">✦</span>
+      <span>Transforming Lives</span><span class="marquee-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="container">
+      <div class="mission-grid">
+        <div class="mission-left reveal">
+          <p class="section-tag">Our Foundation</p>
+          <h2 class="section-title">Built on <span class="gold">Purpose</span></h2>
+          <p class="mission-text">
+            We transform underprivileged youth into <strong>disciplined athletes and confident leaders</strong> through elite basketball training, structured mentorship, and unwavering commitment to character. Our proprietary curriculum merges skills training with <strong>academic accountability</strong> and behavioral excellence.
+          </p>
+          <p class="mission-text" style="margin-top:1rem;">
+            Every drill, every session, every game is a stepping stone — not just toward a scholarship, but toward <strong>a life of impact, purpose, and leadership</strong>.
+          </p>
+          <div class="mission-visual reveal reveal-delay-2">
+            <div class="visual-cell"><div class="visual-cell-num">50</div><div class="visual-cell-txt">Year 1 Athletes</div></div>
+            <div class="visual-cell"><div class="visual-cell-num">D1</div><div class="visual-cell-txt">Level Coaching</div></div>
+            <div class="visual-cell"><div class="visual-cell-num">100%</div><div class="visual-cell-txt">Character Focus</div></div>
+          </div>
+        </div>
+        <div class="mission-right reveal reveal-delay-1">
+          <div class="vision-card">
+            <p>"A world where every young person, regardless of circumstance, rises through sport to become an educated, purpose-driven leader who transforms their community."</p>
+            <div class="vision-label">— Our Vision Statement</div>
+          </div>
+          <div class="vision-card" style="margin-top:1.5rem; padding: 2rem 2.5rem;">
+            <p style="font-size:1rem; font-style:normal; font-family:'Barlow Condensed'; font-weight:300; color:var(--muted); line-height:1.6;">
+              <strong style="color:var(--gold); font-size:1.1rem; display:block; margin-bottom:0.5rem; font-family:'Oswald';">THE INSPIRATION</strong>
+              Behind every strategic plan, every drill, every scholarship is a child with a dream bigger than their circumstances. These young people — the underprivileged, the overlooked, the underestimated — are the beating heart of Hoops of Grace. They are why we exist.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT NUMBERS -->
+  <div class="impact-divider">
+    <div class="container">
+      <div class="impact-numbers">
+        <div class="impact-item reveal">
+          <div class="impact-num"><span class="unit">$</span>5M</div>
+          <div class="impact-label">Endowment Fund<br>Year 5 Target</div>
+        </div>
+        <div class="impact-item reveal reveal-delay-1">
+          <div class="impact-num">25<span class="unit">+</span></div>
+          <div class="impact-label">Flagship Programs<br>Nationwide</div>
+        </div>
+        <div class="impact-item reveal reveal-delay-2">
+          <div class="impact-num">50<span class="unit">%</span></div>
+          <div class="impact-label">College Enrollment<br>Target Rate</div>
+        </div>
+        <div class="impact-item reveal reveal-delay-3">
+          <div class="impact-num">200<span class="unit">+</span></div>
+          <div class="impact-label">Alumni as Coaches<br>& Community Leaders</div>
+        </div>
+        <div class="impact-item reveal reveal-delay-4">
+          <div class="impact-num"><span class="unit">$</span>10M</div>
+          <div class="impact-label">Total Community<br>Investment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRATEGIC PLAN -->
+  <section id="plan">
+    <div class="container">
+      <div class="plan-header reveal">
+        <p class="section-tag">Roadmap to Greatness</p>
+        <h2 class="section-title" style="font-size:clamp(2.5rem,5vw,4rem)">Elite 5-Year <span class="gold">Strategic Plan</span></h2>
+        <p style="color:var(--muted); font-size:1.05rem; margin-top:1.2rem; font-weight:300; max-width:580px; margin-left:auto; margin-right:auto; line-height:1.6;">From founding capital to national institution — a disciplined blueprint for systemic, lasting change.</p>
+      </div>
+      <div class="years-grid">
+        <div class="year-card reveal">
+          <div class="year-num">1</div>
+          <div class="year-badge">Year 01</div>
+          <div class="year-title">Foundation Excellence</div>
+          <ul class="year-items">
+            <li>Establish registered NGO with elite board of advisors</li>
+            <li>Secure $500K+ founding capital</li>
+            <li>Launch flagship with 50 selected youth</li>
+            <li>Deploy proprietary curriculum</li>
+            <li>Install performance tracking system</li>
+          </ul>
+        </div>
+        <div class="year-card reveal reveal-delay-1">
+          <div class="year-num">2</div>
+          <div class="year-badge">Year 02</div>
+          <div class="year-title">Proof of Concept</div>
+          <ul class="year-items">
+            <li>Expand to 3 cities, 150+ youth</li>
+            <li>95%+ program retention rate</li>
+            <li>Secure $1M+ diversified funding</li>
+            <li>Inaugural showcase with university and international scouts</li>
+            <li>Build advisory council of pros & coaches</li>
+          </ul>
+        </div>
+        <div class="year-card reveal reveal-delay-2">
+          <div class="year-num">3</div>
+          <div class="year-badge">Year 03</div>
+          <div class="year-title">Brand Dominance</div>
+          <ul class="year-items">
+            <li>Scale to 8 markets, 400+ youth</li>
+            <li>3+ pro athlete brand ambassadors</li>
+            <li>National media: ESPN & major outlets</li>
+            <li>College prep pipeline with recruiting</li>
+            <li>Regional tournament, D1 scouts</li>
+          </ul>
+        </div>
+        <div class="year-card reveal reveal-delay-3">
+          <div class="year-num">4</div>
+          <div class="year-badge">Year 04</div>
+          <div class="year-title">Systems & Scale</div>
+          <ul class="year-items">
+            <li>15 locations, 750+ youth</li>
+            <li>Launch $250K+ annual scholarship fund</li>
+            <li>Tech platform: analytics & recruiting</li>
+            <li>Partner with 5+ universities</li>
+            <li>$3M+ annual operating budget</li>
+          </ul>
+        </div>
+        <div class="year-card reveal reveal-delay-4">
+          <div class="year-num">5</div>
+          <div class="year-badge">Year 05</div>
+          <div class="year-title">National Institution</div>
+          <ul class="year-items">
+            <li>25+ flagships, 1,500+ youth</li>
+            <li>National Championship — televised</li>
+            <li>$5M endowment for perpetual ops</li>
+            <li>200+ alumni as leaders & coaches</li>
+            <li>International expansion pilot</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-strip">
+    <div class="container">
+      <p class="quote-text reveal">"They are not just players. They are <em>the future</em> — and every child who walks through our doors carries the power to transform not just their life, but their entire community."</p>
+      <p class="quote-source reveal reveal-delay-1">The Inspiration Behind Hoops of Grace</p>
+    </div>
+  </div>
+
+  <!-- PROGRAMS -->
+  <section id="programs">
+    <div class="container">
+      <div class="programs-header reveal">
+        <div>
+          <p class="section-tag">What We Offer</p>
+          <h2 class="section-title">Core <span class="gold">Programs</span></h2>
+        </div>
+        <p style="color:var(--muted); font-size:0.9rem; max-width:320px; text-align:right; line-height:1.6; font-weight:300;">Every program is designed to develop the whole athlete — mind, body, and character.</p>
+      </div>
+      <div class="programs-grid">
+        <div class="program-card reveal">
+          <div class="program-icon-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          </div>
+          <div class="program-card-title">Elite Basketball Training</div>
+          <div class="program-card-desc">Pro-level coaching methodologies. Individual skill development, team systems, IQ training, and physical conditioning — all at a standard reserved for the few.</div>
+          <div class="program-tag">Core Skill Dev</div>
+        </div>
+        <div class="program-card reveal reveal-delay-1">
+          <div class="program-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+          </div>
+          <div class="program-card-title">Academic Accountability</div>
+          <div class="program-card-desc">Mandatory academic tracking, tutoring support, UNEB exam preparation, and university recruiting guidance. Education is non-negotiable.</div>
+          <div class="program-tag">Education Pipeline</div>
+        </div>
+        <div class="program-card reveal reveal-delay-2">
+          <div class="program-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <div class="program-card-title">Mentorship & Character</div>
+          <div class="program-card-desc">Structured mentorship with pro athletes, business leaders, and educators. Weekly character curriculum focused on integrity, discipline, and community.</div>
+          <div class="program-tag">Life Development</div>
+        </div>
+        <div class="program-card reveal">
+          <div class="program-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+          </div>
+          <div class="program-card-title">Family Engagement</div>
+          <div class="program-card-desc">Parent academy, family support services, and community integration programs — because true transformation extends beyond the individual athlete.</div>
+          <div class="program-tag">Community Support</div>
+        </div>
+        <div class="program-card reveal reveal-delay-1">
+          <div class="program-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="program-card-title">Elite Development Track</div>
+          <div class="program-card-desc">Invite-only advanced program for top performers. Pro-level coaching, exposure to university and international scouts, regional and national tournament participation.</div>
+          <div class="program-tag">Year 3+ Expansion</div>
+        </div>
+        <div class="program-card reveal reveal-delay-2">
+          <div class="program-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          </div>
+          <div class="program-card-title">Coach Certification</div>
+          <div class="program-card-desc">Training academy to certify 50+ external coaches in the Hoops of Grace methodology — scaling impact across Uganda through qualified educators.</div>
+          <div class="program-tag">Year 4 Launch</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUCCESS METRICS -->
+  <section id="metrics">
+    <div class="container">
+      <div class="metrics-header reveal">
+        <p class="section-tag">Measuring Greatness</p>
+        <h2 class="section-title">Success <span class="gold">Metrics</span></h2>
+        <p style="color:var(--muted); font-size:1.05rem; margin-top:1.2rem; font-weight:300; max-width:500px; line-height:1.6;">We hold ourselves to the highest standard of accountability. These numbers represent lives changed, futures unlocked.</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card reveal">
+          <div class="metric-bg-num">90</div>
+          <div class="metric-value">90<sup>%</sup></div>
+          <div class="metric-desc">High school graduation rate — because education is the foundation of every dream.</div>
+          <div class="metric-bar" data-pct="90"><div class="metric-bar-fill" style="--pct:90%"></div></div>
+        </div>
+        <div class="metric-card reveal reveal-delay-1">
+          <div class="metric-bg-num">50</div>
+          <div class="metric-value">50<sup>%</sup></div>
+          <div class="metric-desc">College enrollment rate — half our athletes pursuing higher education and greater opportunities.</div>
+          <div class="metric-bar" data-pct="50"><div class="metric-bar-fill" style="--pct:50%"></div></div>
+        </div>
+        <div class="metric-card reveal reveal-delay-2">
+          <div class="metric-bg-num">25</div>
+          <div class="metric-value">25<sup>+</sup></div>
+          <div class="metric-desc">College athletic scholarships awarded — tangible proof that talent, cultivated right, opens doors.</div>
+          <div class="metric-bar" data-pct="75"><div class="metric-bar-fill" style="--pct:75%"></div></div>
+        </div>
+        <div class="metric-card reveal reveal-delay-3">
+          <div class="metric-bg-num">5</div>
+          <div class="metric-value">Top <sup>5</sup></div>
+          <div class="metric-desc">Recognized as a leading youth basketball foundation in Uganda — excellence that speaks for itself.</div>
+          <div class="metric-bar" data-pct="85"><div class="metric-bar-fill" style="--pct:85%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDIA GALLERY / INSTAGRAM -->
+  <section id="media">
+    <div class="media-header reveal">
+      <p class="section-tag">Follow Our Journey</p>
+      <h2 class="media-title">In The <span class="gold">Moment</span></h2>
+      <p class="media-subtitle">Real stories, real transformation. Experience our athletes' journey through their eyes on Instagram.</p>
+    </div>
+    
+    <!-- Instagram Feed Embed -->
+    <div class="instagram-feed-container">
+      <!-- SnapWidget - Live Instagram Feed from @hoopsofgrace_academy -->
+      <script src="https://snapwidget.com/js/snapwidget.js"></script>
+      <iframe src="https://snapwidget.com/embed/1118059" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%;" title="Posts from Instagram"></iframe>
+    </div>
+
+    <div class="instagram-cta reveal">
+      <a href="https://instagram.com/hoopsofgrace_academy" target="_blank" class="instagram-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+        <span>Follow @hoopsofgrace_academy</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- INSPIRATION -->
+  <section id="inspiration">
+    <div class="container">
+      <div class="inspiration-layout">
+        <div class="inspiration-text reveal">
+          <p class="section-tag">The Why</p>
+          <h2 class="section-title">They Are The <span class="gold">Inspiration</span></h2>
+          <p class="inspiration-body">Behind every statistic, every dollar raised, every championship game — there is a face. A child who deserved better. A young person who had <strong>more potential than opportunity</strong>.</p>
+          <p class="inspiration-body">Hoops of Grace exists because those children deserve a system built for them. Not charity. Not sympathy. <strong>Elite development. Real investment. Genuine transformation.</strong></p>
+          <p class="inspiration-body">When you support Hoops of Grace, you are not writing a check — you are writing a future. You are the reason a first-generation university student walks across that stage. You are the reason a former at-risk youth is now mentoring the next generation.</p>
+          <a href="#donate" class="btn-primary" style="margin-top:2.5rem; display:inline-block;"><span>Fund Their Future</span></a>
+        </div>
+        <div class="player-cards reveal reveal-delay-1">
+          <div class="player-card">
+            <div class="player-number">01</div>
+            <div class="player-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+            <div class="player-name">The Dreamer</div>
+            <div class="player-role">Age 10–14 · Foundation Track</div>
+          </div>
+          <div class="player-card">
+            <div class="player-number">02</div>
+            <div class="player-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div class="player-name">The Competitor</div>
+            <div class="player-role">Age 14–17 · Elite Dev Track</div>
+          </div>
+          <div class="player-card">
+            <div class="player-number">03</div>
+            <div class="player-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+            </div>
+            <div class="player-name">The Scholar</div>
+            <div class="player-role">Age 16–18 · University Pathway</div>
+          </div>
+          <div class="player-card">
+            <div class="player-number">04</div>
+            <div class="player-icon">
+              <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <div class="player-name">The Leader</div>
+            <div class="player-role">Alumni · Mentor & Coach</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONATE -->
+  <section id="donate">
+    <div class="donate-bg">
+      <div class="donate-inner">
+        <div class="donate-left">
+          <p class="section-tag">Partner With Us</p>
+          <h2 class="donate-title">Invest in a<br>Generation</h2>
+          <p class="donate-sub">Your contribution directly funds training, scholarships, academic support, and the infrastructure to scale life-changing programs across Uganda.</p>
+          <div class="donate-amounts">
+            <button class="amount-btn" onclick="setAmount(this,'$100')">$100</button>
+            <button class="amount-btn active" onclick="setAmount(this,'$500')">$500</button>
+            <button class="amount-btn" onclick="setAmount(this,'$1,000')">$1,000</button>
+            <button class="amount-btn" onclick="setAmount(this,'$5,000')">$5,000</button>
+            <button class="amount-btn" onclick="setAmount(this,'Custom')">Custom</button>
+          </div>
+          <button class="donate-btn-main" onclick="handleDonate()">Donate $500 Now →</button>
+          <p style="font-size:0.75rem; color:rgba(0,0,0,0.45); margin-top:1rem; letter-spacing:0.05em;">Secure processing · Registered Nonprofit Organization</p>
+        </div>
+        <div class="donate-right">
+          <p class="tier-title">Donor Partnership Tiers</p>
+          <div class="tier-list">
+            <div class="tier-item">
+              <div class="tier-amount">$100</div>
+              <div class="tier-info">
+                <div class="tier-name">Game Changer</div>
+                <div class="tier-desc">Funds one month of academic tutoring for a youth in the program.</div>
+              </div>
+            </div>
+            <div class="tier-item">
+              <div class="tier-amount">$500</div>
+              <div class="tier-info">
+                <div class="tier-name">Mentor Partner</div>
+                <div class="tier-desc">Covers full equipment and gear package for one athlete for the season.</div>
+              </div>
+            </div>
+            <div class="tier-item">
+              <div class="tier-amount">$1K</div>
+              <div class="tier-info">
+                <div class="tier-name">Legacy Builder</div>
+                <div class="tier-desc">Sponsors one athlete's full program enrollment for an entire year.</div>
+              </div>
+            </div>
+            <div class="tier-item">
+              <div class="tier-amount">$10K+</div>
+              <div class="tier-info">
+                <div class="tier-name">Founding Patron</div>
+                <div class="tier-desc">Named recognition, annual report feature, and direct board communication. Shapes the organization.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section id="faq">
+    <div class="faq-header reveal">
+      <p class="section-tag">Questions & Answers</p>
+      <h2 class="section-title">Frequently Asked <span class="gold">Questions</span></h2>
+      <p class="section-subtitle" style="margin-top:1.5rem; color:var(--muted);">Everything you need to know about joining Hoops of Grace.</p>
+    </div>
+    
+    <div class="faq-container">
+      <!-- FAQ 1 -->
+      <div class="faq-item reveal" onclick="toggleFAQ(this)">
+        <div class="faq-question">
+          <span>How do I enroll my child in the program?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+        <div class="faq-answer">
+          <p>Contact us via WhatsApp (click the green button below) or visit our training facility in Kampala. We conduct assessments every month to evaluate skill level and place athletes in the appropriate program tier (Foundation, Elite Development, or University Pathway).</p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item reveal reveal-delay-1" onclick="toggleFAQ(this)">
+        <div class="faq-question">
+          <span>What ages do you accept?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+        <div class="faq-answer">
+          <p>We accept youth ages 10-18. Our Foundation Track is for ages 10-14, Elite Development for 14-17, and University Pathway for 16-18. Athletes are placed based on both age and skill assessment.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item reveal reveal-delay-2" onclick="toggleFAQ(this)">
+        <div class="faq-question">
+          <span>Is there a cost to join?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+        <div class="faq-answer">
+          <p>Hoops of Grace is committed to accessibility. We offer sliding scale fees based on family income, with full scholarships available for those who qualify. No child is turned away due to financial constraints—basketball and education should be available to all.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item reveal" onclick="toggleFAQ(this)">
+        <div class="faq-question">
+          <span>What does the program include?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+        <div class="faq-answer">
+          <p>Complete athlete development: basketball training 3-4x per week, academic tutoring, UNEB exam preparation, mentorship, nutrition guidance, uniform and equipment, tournament participation, and university recruiting support. We develop the whole person, not just the player.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="faq-item reveal reveal-delay-1" onclick="toggleFAQ(this)">
+        <div class="faq-question">
+          <span>Where are training sessions held?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+        <div class="faq-answer">
+          <p>We train at multiple facilities across Kampala, including indoor courts and outdoor training grounds. Specific locations are shared upon enrollment. Transportation assistance is available for families who need it.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="faq-item reveal reveal-delay-2" onclick="toggleFAQ(this)">
+        <div class="faq-question">
+          <span>Can my child join mid-season?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+        <div class="faq-answer">
+          <p>Yes! We accept athletes year-round. New cohorts start quarterly, but exceptional athletes can join anytime with a coach's recommendation. Contact us to schedule an assessment and placement evaluation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="testimonials-header reveal">
+      <p class="section-tag">Real Stories, Real Impact</p>
+      <h2 class="section-title">Voices <span class="gold">of Change</span></h2>
+      <p class="section-subtitle" style="margin-top:1.5rem; color:var(--muted);">Hear from the families, athletes, and community members whose lives have been transformed through Hoops of Grace.</p>
+    </div>
+    
+    <div class="testimonials-grid">
+      <!-- Testimonial 1: Parent -->
+      <div class="testimonial-card reveal">
+        <p class="testimonial-text">"Before Hoops of Grace, my daughter struggled in school and lacked confidence. Now she's not only excelling on the court but also leading her class academically. This program doesn't just teach basketball—it builds character and discipline that changes lives."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">Maria Nakato</div>
+            <div class="testimonial-role">Parent · Kampala</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2: Athlete -->
+      <div class="testimonial-card reveal reveal-delay-1">
+        <p class="testimonial-text">"I joined Hoops of Grace when I was 12 with big dreams but no clear path. The coaches didn't just teach me basketball skills—they mentored me, helped me with schoolwork, and believed in me. Now I'm preparing for university trials and my future looks bright."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">D</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">David Okello</div>
+            <div class="testimonial-role">Athlete · Age 17</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 3: Community Leader -->
+      <div class="testimonial-card reveal reveal-delay-2">
+        <p class="testimonial-text">"Hoops of Grace is more than a basketball program—it's a movement transforming our community. I've watched children who had no direction find purpose, discipline, and hope. The impact extends beyond the court into homes, schools, and the entire neighborhood."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">J</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">Joseph Mugisha</div>
+            <div class="testimonial-role">Community Leader</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPONSOR SECTION -->
+  <section id="partnership">
+    <div class="partnership-content">
+      <p class="partnership-label">Proudly Sponsored By</p>
+      <div class="partnership-logos">
+        <div class="partner-logo">
+          <a href="https://www.metafit256.com/" target="_blank" rel="noopener noreferrer">
+            <img src="metafit.jpg" alt="MetaFit - Official Training Partner">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING DONATE BUTTON -->
+  <div class="floating-donate">
+    <a href="#donate" class="floating-donate-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span>DONATE NOW</span>
+    </a>
+  </div>
+
+  <!-- WHATSAPP BUTTON -->
+  <div class="whatsapp-float">
+    <a href="https://wa.me/256XXXXXXXXX?text=Hi%20Hoops%20of%20Grace!%20I'd%20like%20to%20learn%20more%20about%20the%20program." 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="whatsapp-btn"
+       aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="logo.png" alt="Hoops of Grace Logo">
+            Hoops <span>of Grace</span>
+          </div>
+          <p class="footer-tagline">Transforming underprivileged youth into disciplined athletes and confident leaders through elite basketball training and structured mentorship.</p>
+          
+          <!-- Newsletter Signup -->
+          <div class="footer-newsletter" style="margin-top: 2rem;">
+            <div class="newsletter-title">Stay Connected</div>
+            <p class="newsletter-desc">Get monthly updates, success stories, and impact reports delivered to your inbox.</p>
+            <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+              <input type="email" class="newsletter-input" placeholder="Your email address" required>
+              <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+          </div>
+          
+          <p style="margin-top:2rem; font-family:'Space Mono'; font-size:0.6rem; letter-spacing:0.15em; color:var(--gold);">REGISTERED NONPROFIT ORGANIZATION</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Organization</div>
+          <ul class="footer-links">
+            <li><a href="#mission">Our Mission</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#plan">Strategic Plan</a></li>
+            <li><a href="#metrics">Impact Metrics</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Get Involved</div>
+          <ul class="footer-links">
+            <li><a href="#donate">Donate</a></li>
+            <li><a href="#donate">Corporate Sponsors</a></li>
+            <li><a href="#donate">Volunteer</a></li>
+            <li><a href="#donate">Become a Mentor</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Connect</div>
+          <ul class="footer-links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter / X</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2024 Hoops of Grace Basketball Academy. All rights reserved.</p>
+        <p class="footer-501">Registered Nonprofit · Kampala, Uganda</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // Metric bar animation
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.metric-bar').forEach(bar => bar.classList.add('animated'));
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.metrics-grid').forEach(el => barObserver.observe(el));
+
+    // Donate amount selector
+    let currentAmount = '$500';
+    function setAmount(btn, amount) {
+      document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentAmount = amount;
+      const mainBtn = document.querySelector('.donate-btn-main');
+      if (amount === 'Custom') {
+        mainBtn.textContent = 'Enter Custom Amount →';
+      } else {
+        mainBtn.textContent = `Donate ${amount} Now →`;
+      }
+    }
+
+    function handleDonate() {
+      const msg = currentAmount === 'Custom'
+        ? 'Thank you for your generosity! Please contact us to arrange your custom donation.'
+        : `Thank you! Your ${currentAmount} donation will transform lives. Secure payment processing coming soon.`;
+      alert(msg);
+    }
+
+    // Instagram integration
+    function openInstagram() {
+      window.open('https://instagram.com/hoopsofgrace_academy', '_blank');
+    }
+
+    // Animated counter
+    function animateCounter(el, target, duration = 2000) {
+      const start = performance.now();
+      const isFloat = String(target).includes('.');
+      const update = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(ease * target);
+        el.textContent = current + (el.dataset.suffix || '');
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = target + (el.dataset.suffix || '');
+      };
+      requestAnimationFrame(update);
+    }
+
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (mobileMenuToggle) {
+      mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+      
+      // Close menu when clicking on a link
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && navLinks.classList.contains('active')) {
+          mobileMenuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
+        }
+      });
+    }
+
+    // Newsletter form handler
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const input = e.target.querySelector('input[type="email"]');
+      const email = input.value;
+      alert(`Thank you for subscribing! We'll send updates to ${email}`);
+      input.value = '';
+      // TODO: Connect to email service (Mailchimp, ConvertKit, etc.)
+    }
+
+    // FAQ toggle
+    function toggleFAQ(element) {
+      element.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
